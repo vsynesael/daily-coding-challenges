@@ -1,13 +1,11 @@
-import sun.reflect.generics.tree.Tree;
 
-import java.util.Arrays;
 
 /**
  * Question :: Given the root to a binary tree, implement serialize(root),
  * which serializes the tree into a string, and deserialize(s),
  * which deserializes the string back into the tree.
  *
- * Assumption :: we are serializing/deserializing inorder
+ * Assumption :: we are serializing inorder and deserializing into balanced tree.
  */
 public class CodingChallenge062419 {
 
@@ -49,7 +47,7 @@ public class CodingChallenge062419 {
             i++;
         }
 
-        return buildBalancedTree(arr, 0, arr.length-1, new TreeNode());
+        return buildBalancedTree(arr, 0, arr.length-1);
     }
 
     private static TreeNode buildInorderTree(int[] inorder, int start, int end, TreeNode node) {
@@ -72,20 +70,16 @@ public class CodingChallenge062419 {
         return node;
     }
 
-    private static TreeNode buildBalancedTree(int[] arr, int start, int end, TreeNode node) {
+    private static TreeNode buildBalancedTree(int[] arr, int start, int end) {
         if (start > end) {
             return null;
         }
 
-        // need to figure out how to find the middle of the next array group
-//        int i = Math.round((float) (end-start) / 2);
+        int mid = (start+end) / 2;
+        TreeNode node = new TreeNode(arr[mid]);
 
-        if (node == null) {
-            node = new TreeNode(arr[i]);
-        }
-
-        node.left = buildBalancedTree(arr, start, i-1, node.left);
-        node.right = buildBalancedTree(arr, i+1, end, node.right);
+        node.left = buildBalancedTree(arr, 0, mid-1);
+        node.right = buildBalancedTree(arr, mid+1, end);
 
         return node;
     }
